@@ -83,9 +83,19 @@ section "install"
 
     # Copy the app icon in the installation directory
     file "${ICON_NAME}"
+		
+		
 	
 sectionEnd
 
+section "install-demo"
+	setOutPath "$INSTDIR\demo"
+	
+    # Copy the demo animation
+    file /r "wvr-demo\*"
+		
+	
+sectionEnd
 
 section "redist"
 	setOutPath $INSTDIR\redist
@@ -110,12 +120,12 @@ section "postInstall"
 
 	${If} ${Cmd} `MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Create a menu shortcut?" IDYES`
 		# Create a start menu shortcut
-		createShortCut "$SMPROGRAMS\${COMPANYNAME}\${APPNAME}.lnk" "$INSTDIR\bin\${EXECUTABLE_NAME}" "" "$INSTDIR\bin\${ICON_NAME}"
+		createShortCut "$SMPROGRAMS\${COMPANYNAME}\${APPNAME}.lnk" "$INSTDIR\bin\${EXECUTABLE_NAME}" "-c $\"$INSTDIR\demo\config.ron$\"" "$INSTDIR\bin\${ICON_NAME}" 
 	${EndIf}
 	
 	${If} ${Cmd} `MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Create a desktop shortcut?" IDYES`
 		# Create a desktop shortcut
-		createShortCut "$DESKTOP\${APPNAME}.lnk" "$INSTDIR\bin\${EXECUTABLE_NAME}" "" "$INSTDIR\bin\${ICON_NAME}"
+		createShortCut "$DESKTOP\${APPNAME}.lnk" "$INSTDIR\bin\${EXECUTABLE_NAME}" "-c $\"$INSTDIR\demo\config.ron$\"" "$INSTDIR\bin\${ICON_NAME}"
 	${EndIf}
 	
 	${If} ${Cmd} `MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Add executable to path?" IDYES`

@@ -1,3 +1,6 @@
 [submodule "wvr-demo"]
 	path = wvr-demo
 	url = https://github.com/gurkeclub/wvr-demo
+[submodule "wvr-examples"]
+	path = wvr-examples
+	url = https://github.com/gurkeclub/wvr-examples.git

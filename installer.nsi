@@ -5,45 +5,22 @@
 !define COMPANYNAME "gurke.club"
 
 !define EXECUTABLE_NAME "wvr.exe"
+!define LAUNCHER_NAME "wvr-launcher.exe"
 !define ICON_NAME "icon.ico"
 
 !define VERSIONMAJOR 0
 !define VERSIONMINOR 0
 !define VERSIONPATCH 1
 
-RequestExecutionLevel user
+#RequestExecutionLevel user
 
 # create a directory where we will put our assets (eg: image, executable, uninstaller, dependencies...)
-InstallDir "$PROGRAMFILES\${APPNAME}\" #(ie: C:\Program Files\BestCompanyEver\1.0.0\)
+InstallDir "$PROGRAMFILES\${APPNAME}\" 
 
 # Define the installer name
 Name "Wvr installer"
 outFile "wvr-setup.exe"
 
-Function uninstall
-	# Remove bin folder from path
-	EnVar::SetHKCU
-	EnVar::DeleteValue "PATH" "$INSTDIR\bin"
-	
-	${If} ${Cmd} `MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Remove gstreamer?" IDYES`
-		# Remove libsfrom path
-		EnVar::SetHKCU
-		EnVar::DeleteValue "PATH" "%GSTREAMER_1_0_ROOT_MINGW_X86_64%\bin"
-		EnVar::DeleteValue "PATH" "%GSTREAMER_1_0_ROOT_MINGW_X86_64%\lib"
-		
-		# Install gstreamer
-		ExecWait '"msiexec" /passive /x "$INSTDIR\redist\gstreamer-1.0-mingw-x86_64-1.18.2.msi"'
-		
-	${EndIf}
-	
-	# Remove shortcuts
-	Delete "$SMPROGRAMS\${COMPANYNAME}\${APPNAME}.lnk"
-	Delete "$DESKTOP\${APPNAME}.lnk"
-	
-	# Remove install folder
-	RMDir /r $INSTDIR
-	
-FunctionEnd
 
 
 Function .onInit
@@ -74,12 +51,41 @@ Function .onInit
 	Pop $0
 FunctionEnd
 
+Function uninstall
+	# Remove bin folder from path
+	EnVar::SetHKCU
+	EnVar::DeleteValue "PATH" "$INSTDIR\bin"
+	
+	${If} ${Cmd} `MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Remove gstreamer?" IDYES`
+		# Remove libsfrom path
+		EnVar::SetHKCU
+		EnVar::DeleteValue "PATH" "%GSTREAMER_1_0_ROOT_MINGW_X86_64%\bin"
+		EnVar::DeleteValue "PATH" "%GSTREAMER_1_0_ROOT_MINGW_X86_64%\lib"
+		
+		# Install gstreamer
+		ExecWait '"msiexec" /passive /x "$INSTDIR\redist\gstreamer-1.0-mingw-x86_64-1.18.2.msi"'
+		
+	${EndIf}
+	
+	# Remove shortcuts
+	Delete "$SMPROGRAMS\${COMPANYNAME}\${APPNAME}.lnk"
+	Delete "$DESKTOP\${APPNAME}.lnk"
+	
+	# Remove install folder
+	RMDir /r $INSTDIR
+	
+  RMDir /r "$LocalAppdata\gurke\wvr"
+	
+FunctionEnd
 
 section "install"
 	setOutPath "$INSTDIR\bin"
 	
     # Copy the executable in the installation directory
     file "${EXECUTABLE_NAME}"
+
+    # Copy the executable in the installation directory
+    file "${LAUNCHER_NAME}"
 
     # Copy the app icon in the installation directory
     file "${ICON_NAME}"
@@ -89,10 +95,13 @@ section "install"
 sectionEnd
 
 section "install-demo"
-	setOutPath "$INSTDIR\demo"
+  SetOutPath "$LocalAppdata\gurke\wvr\data\projects\"
 	
     # Copy the demo animation
-    file /r "wvr-demo\*"
+    file /r "wvr-demo"
+		
+    # Copy the demo animation
+    file /r "wvr-examples"
 		
 	
 sectionEnd
@@ -120,12 +129,12 @@ section "postInstall"
 
 	${If} ${Cmd} `MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Create a menu shortcut?" IDYES`
 		# Create a start menu shortcut
-		createShortCut "$SMPROGRAMS\${COMPANYNAME}\${APPNAME}.lnk" "$INSTDIR\bin\${EXECUTABLE_NAME}" "-c $\"$INSTDIR\demo\config.ron$\"" "$INSTDIR\bin\${ICON_NAME}" 
+		createShortCut "$SMPROGRAMS\${COMPANYNAME}\${APPNAME}.lnk" "$INSTDIR\bin\${LAUNCHER_NAME}" "" "$INSTDIR\bin\${ICON_NAME}" 
 	${EndIf}
 	
 	${If} ${Cmd} `MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Create a desktop shortcut?" IDYES`
 		# Create a desktop shortcut
-		createShortCut "$DESKTOP\${APPNAME}.lnk" "$INSTDIR\bin\${EXECUTABLE_NAME}" "-c $\"$INSTDIR\demo\config.ron$\"" "$INSTDIR\bin\${ICON_NAME}"
+		createShortCut "$DESKTOP\${APPNAME}.lnk" "$INSTDIR\bin\${LAUNCHER_NAME}" "" "$INSTDIR\bin\${ICON_NAME}"
 	${EndIf}
 	
 	${If} ${Cmd} `MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Add executable to path?" IDYES`

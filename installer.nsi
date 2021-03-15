@@ -79,16 +79,16 @@ Function uninstall
 FunctionEnd
 
 section "install"
-	setOutPath "$INSTDIR\bin"
+	setOutPath "$INSTDIR"
 	
-    # Copy the executable in the installation directory
-    file "${EXECUTABLE_NAME}"
+    # Copy the executable and dlls in the installation directory
+    file /r "bin"
 
-    # Copy the executable in the installation directory
-    file "${LAUNCHER_NAME}"
-
-    # Copy the app icon in the installation directory
-    file "${ICON_NAME}"
+    # Copy the libs path in the installation directory
+    file /r "lib"
+		
+    # Copy the gtk resources path in the installation directory
+    file /r "share"
 		
 		
 	

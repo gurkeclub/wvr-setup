@@ -1,0 +1,30 @@
+# Maintainer: Champyrti <champi@gurke.club>
+pkgname=wvr-launcher
+pkgver=0.1.0
+pkgrel=0
+pkgdesc="A launcher for the wvr tool"
+arch=('x86_64')
+url="https://github.com/gurkeclub/wvr-launcher"
+license=('MIT')
+depends=('bzip2' 'dbus' 'expat' 'gcc-libs' 'glib2' 'glibc' 'libcap' 'libffi' 'libgcrypt' 'libgpg-error' 'lz4' 'pcre' 'systemd-libs' 'util-linux-libs' 'xz' 'zlib' 'zstd' 'atk' 'at-spi2-atk' 'at-spi2-core' 'cairo' 'fontconfig' 'freetype2' 'fribidi' 'gdk-pixbuf2' 'graphite' 'gtk3' 'harfbuzz' 'libcloudproviders' 'libdatrie' 'libepoxy' 'libpng' 'libthai' 'libx11' 'libxau' 'libxcb' 'libxcomposite' 'libxcursor' 'libxdamage' 'libxdmcp' 'libxext' 'libxfixes' 'libxi' 'libxinerama' 'libxkbcommon' 'libxrandr' 'libxrender' 'pango' 'pixman' 'wayland')
+makedepends=('cargo' 'pkgconf')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/gurkeclub/$pkgname/archive/$pkgver.tar.gz")
+sha512sums=('3cba5c09e3e1d799643b265b0f50c7420693ecd258012d51b7f04f080c9cc8263db9796116cb3ef8db3b640e59d634aeb90977903b26660d62112ac8c64ae819')
+
+build() {
+  cd "$pkgname-$pkgver"
+
+  cargo build --release --locked
+}
+
+check() {
+  cd "$pkgname-$pkgver"
+
+  cargo test --release --locked
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+
+  install -Dm 755 target/release/${pkgname} -t "${pkgdir}/usr/bin"
+}

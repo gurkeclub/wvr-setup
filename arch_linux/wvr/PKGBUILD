@@ -1,0 +1,30 @@
+# Maintainer: Champyrti <champi@gurke.club>
+pkgname=wvr
+pkgver=0.1.2
+pkgrel=0
+pkgdesc="A vj/animation framework focused on shader live coding"
+arch=('x86_64')
+url="https://github.com/gurkeclub/wvr"
+license=('MIT')
+depends=('bzip2' 'gcc-libs' 'glib2' 'glibc' 'libelf' 'libffi' 'openssl' 'pcre' 'xz' 'zlib' 'zstd' 'alsa-lib' 'gst-plugins-base-libs' 'gstreamer' 'libunwind' 'orc')
+makedepends=('cargo' 'pkgconf')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/gurkeclub/$pkgname/archive/$pkgver.tar.gz")
+sha512sums=('08bfab93fb2f98f8d8a1ed961b4cc5cfae231e32a25c20ee7577cb4ac87bce146891fc868459413689b86ee6cbc227256fddd68200252be46c5d5857b0559bf7')
+
+build() {
+  cd "$pkgname-$pkgver"
+
+  cargo build --release --locked
+}
+
+check() {
+  cd "$pkgname-$pkgver"
+
+  cargo test --release --locked
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+
+  install -Dm 755 target/release/${pkgname} -t "${pkgdir}/usr/bin"
+}

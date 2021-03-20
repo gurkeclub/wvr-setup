@@ -1,5 +1,5 @@
 # wvr-setup
-This repository hosts the scripts and resources used for building the wvr installer for windows.
+This folder hosts the scripts and resources used for building the wvr installer for windows.
 
 The latest build is available at the [release page](https://github.com/gurkeclub/wvr-setup/releases).
 

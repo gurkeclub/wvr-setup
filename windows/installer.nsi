@@ -95,13 +95,12 @@ section "install"
 sectionEnd
 
 section "install-demo"
-  SetOutPath "$LocalAppdata\gurke\wvr\data\projects\"
+  SetOutPath "$LocalAppdata\gurke\wvr\data\"
+    # Copy the demo animation
+    file /r "wvr-data\libs"
 	
     # Copy the demo animation
-    file /r "wvr-demo"
-		
-    # Copy the demo animation
-    file /r "wvr-examples"
+    file /r "wvr-data\projects"
 		
 	
 sectionEnd

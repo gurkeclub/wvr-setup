@@ -1,13 +1,13 @@
 MINGW_PREFIX="/c/msys64/mingw64"
-WVR_PATH="../wvr/target/release/wvr.exe"
-LAUNCHER_PATH="../wvr-launcher/target/release/wvr-launcher.exe"
+WVR_BIN_PATH="../../wvr/target/release/wvr.exe"
+LAUNCHER_BIN_PATH="../../wvr-launcher/target/release/wvr-launcher.exe"
 
 mkdir -p bin/
 mkdir -p share/
 mkdir -p lib/
 
-cp "$WVR_PATH" bin/
-cp "$LAUNCHER_PATH" bin/
+cp "$WVR_BIN_PATH" bin/
+cp "$LAUNCHER_BIN_PATH" bin/
 
 cp "$MINGW_PREFIX/bin/libatk-1.0-0.dll" bin/
 cp "$MINGW_PREFIX/bin/libbrotlicommon.dll" bin/

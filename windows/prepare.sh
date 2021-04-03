@@ -6,6 +6,7 @@ mkdir -p bin/
 mkdir -p share/
 mkdir -p lib/
 
+cp "icon.ico" bin/
 cp "$WVR_BIN_PATH" bin/
 cp "$LAUNCHER_BIN_PATH" bin/
 

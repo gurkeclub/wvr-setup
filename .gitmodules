@@ -4,3 +4,9 @@
 [submodule "wvr-examples"]
 	path = wvr-examples
 	url = https://github.com/gurkeclub/wvr-examples.git
+[submodule "windows/wvr-data/projects/wvr-examples"]
+	path = windows/wvr-data/projects/wvr-examples
+	url = https://github.com/gurkeclub/wvr-examples
+[submodule "windows/wvr-data/libs/std"]
+	path = windows/wvr-data/libs/std
+	url = https://github.com/gurkeclub/wvr-glsl-lib-std.git

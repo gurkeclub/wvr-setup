@@ -10,3 +10,6 @@
 [submodule "windows/wvr-data/libs/std"]
 	path = windows/wvr-data/libs/std
 	url = https://github.com/gurkeclub/wvr-glsl-lib-std.git
+[submodule "windows/wvr-data/filters"]
+	path = windows/wvr-data/filters
+	url = https://github.com/gurkeclub/wvr-filters.git

@@ -10,6 +10,8 @@ cp "icon.ico" bin/
 cp "$WVR_BIN_PATH" bin/
 cp "$LAUNCHER_BIN_PATH" bin/
 
+cp "$MINGW_PREFIX/bin/libssh2-1.dll" bin/
+cp "$MINGW_PREFIX/bin/libgit2.dll" bin/
 cp "$MINGW_PREFIX/bin/libatk-1.0-0.dll" bin/
 cp "$MINGW_PREFIX/bin/libbrotlicommon.dll" bin/
 cp "$MINGW_PREFIX/bin/libbrotlidec.dll" bin/

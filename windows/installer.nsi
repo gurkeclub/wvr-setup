@@ -12,10 +12,11 @@
 !define VERSIONMINOR 0
 !define VERSIONPATCH 1
 
-#RequestExecutionLevel user
+RequestExecutionLevel user
 
 # create a directory where we will put our assets (eg: image, executable, uninstaller, dependencies...)
-InstallDir "$PROGRAMFILES\${APPNAME}\" 
+# InstallDir "$PROGRAMFILES\${APPNAME}\" 
+InstallDir "$LocalAppdata\gurke\wvr"
 
 # Define the installer name
 Name "Wvr installer"
@@ -35,8 +36,8 @@ Function .onInit
 	already_installed:
 	${If} ${Cmd} `MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Remove wvr?" IDYES`
 		Call uninstall
-		Abort
 	${EndIf}
+	Abort
 	
 	goto install_test_end
 		
@@ -55,17 +56,7 @@ Function uninstall
 	# Remove bin folder from path
 	EnVar::SetHKCU
 	EnVar::DeleteValue "PATH" "$INSTDIR\bin"
-	
-	${If} ${Cmd} `MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Remove gstreamer?" IDYES`
-		# Remove libsfrom path
-		EnVar::SetHKCU
-		EnVar::DeleteValue "PATH" "%GSTREAMER_1_0_ROOT_MINGW_X86_64%\bin"
-		EnVar::DeleteValue "PATH" "%GSTREAMER_1_0_ROOT_MINGW_X86_64%\lib"
-		
-		# Install gstreamer
-		ExecWait '"msiexec" /passive /x "$INSTDIR\redist\gstreamer-1.0-mingw-x86_64-1.18.2.msi"'
-		
-	${EndIf}
+	EnVar::DeleteValue "GSTREAMER_1_0_ROOT_MINGW_X86_64"
 	
 	# Remove shortcuts
 	Delete "$SMPROGRAMS\${COMPANYNAME}\${APPNAME}.lnk"
@@ -75,6 +66,8 @@ Function uninstall
 	RMDir /r $INSTDIR
 	
   RMDir /r "$LocalAppdata\gurke\wvr"
+  
+  MessageBox MB_OK "Wvr uninstalled!"
 	
 FunctionEnd
 
@@ -99,27 +92,28 @@ section "install-demo"
     # Copy the demo animation
     file /r "wvr-data\libs"
 	
-    # Copy the demo animation
+    # Copy the preinstalled filters 
+    file /r "wvr-data\filters"
+	
+    # Copy the preinstalled projects 
     file /r "wvr-data\projects"
 		
 	
 sectionEnd
 
 section "redist"
-	setOutPath $INSTDIR\redist
+	setOutPath $INSTDIR
 
 	# Copy the gstreamer installer in the install dir
-	File "redist\gstreamer-1.0-mingw-x86_64-1.18.2.msi"
-
-	${If} ${Cmd} `MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Install gstreamer? (required)" IDYES`
-		# Install gstreamer
-		ExecWait '"msiexec" /passive INSTALLDIR="$INSTDIR\gstreamer" /i "$INSTDIR\redist\gstreamer-1.0-mingw-x86_64-1.18.2.msi"'
-	${EndIf}
+	file /r "gstreamer"
 
 	# Add gstreamer libs to path
 	EnVar::SetHKCU
+	EnVar::AddValueEx "GSTREAMER_1_0_ROOT_MINGW_X86_64" "$INSTDIR\gstreamer\1.0\mingw_x86_64"
 	EnVar::AddValueEx "PATH" "%GSTREAMER_1_0_ROOT_MINGW_X86_64%\bin"
 	EnVar::AddValueEx "PATH" "%GSTREAMER_1_0_ROOT_MINGW_X86_64%\lib"
+
+
 	
 sectionEnd
 
@@ -136,10 +130,7 @@ section "postInstall"
 		createShortCut "$DESKTOP\${APPNAME}.lnk" "$INSTDIR\bin\${LAUNCHER_NAME}" "" "$INSTDIR\bin\${ICON_NAME}"
 	${EndIf}
 	
-	${If} ${Cmd} `MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Add executable to path?" IDYES`
-		# Add wvr executable to path
-		EnVar::SetHKCU
-		EnVar::AddValueEx "PATH" "$INSTDIR\bin"
-	${EndIf}
+	EnVar::SetHKCU
+	EnVar::AddValueEx "PATH" "$INSTDIR\bin"
 	
 sectionEnd

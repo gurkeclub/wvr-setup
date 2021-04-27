@@ -56,6 +56,8 @@ Function uninstall
 	# Remove bin folder from path
 	EnVar::SetHKCU
 	EnVar::DeleteValue "PATH" "$INSTDIR\bin"
+	EnVar::DeleteValue "PATH" "$INSTDIR\gstreamer\1.0\mingw_x86_64\bin"
+	EnVar::DeleteValue "PATH" "$INSTDIR\gstreamer\1.0\mingw_x86_64\lib"
 	EnVar::DeleteValue "GSTREAMER_1_0_ROOT_MINGW_X86_64"
 	
 	# Remove shortcuts
@@ -65,9 +67,8 @@ Function uninstall
 	# Remove install folder
 	RMDir /r $INSTDIR
 	
-  RMDir /r "$LocalAppdata\gurke\wvr"
   
-  MessageBox MB_OK "Wvr uninstalled!"
+	MessageBox MB_OK "Wvr uninstalled!"
 	
 FunctionEnd
 
@@ -110,8 +111,8 @@ section "redist"
 	# Add gstreamer libs to path
 	EnVar::SetHKCU
 	EnVar::AddValueEx "GSTREAMER_1_0_ROOT_MINGW_X86_64" "$INSTDIR\gstreamer\1.0\mingw_x86_64"
-	EnVar::AddValueEx "PATH" "%GSTREAMER_1_0_ROOT_MINGW_X86_64%\bin"
-	EnVar::AddValueEx "PATH" "%GSTREAMER_1_0_ROOT_MINGW_X86_64%\lib"
+	EnVar::AddValueEx "PATH" "$INSTDIR\gstreamer\1.0\mingw_x86_64\bin"
+	EnVar::AddValueEx "PATH" "$INSTDIR\gstreamer\1.0\mingw_x86_64\lib"
 
 
 	

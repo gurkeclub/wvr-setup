@@ -1,15 +1,31 @@
 MINGW_PREFIX="/c/msys64/mingw64"
 WVR_BIN_PATH="../../wvr/target/release/wvr.exe"
 LAUNCHER_BIN_PATH="../../wvr-launcher/target/release/wvr-launcher.exe"
+WVR_STD_LIBS_PATH="../../wvr-glsl-lib-std"
+WVR_FILTERS_PATH="../../wvr-filters"
+WVR_EXAMPLES_PATH="../../wvr-examples"
+
+rm -r bin/
+rm -r share/
+rm -r lib/
+rm -r libexec/
+rm -r data/
 
 mkdir -p bin/
 mkdir -p share/
 mkdir -p lib/
 mkdir -p libexec/
+mkdir -p data/
 
 cp "icon.ico" ./bin/
 cp "$WVR_BIN_PATH" ./bin/
 cp "$LAUNCHER_BIN_PATH" ./bin/
+
+strip bin/wvr.exe
+upx --best --lzma --force bin/wvr.exe
+
+strip bin/wvr-launcher.exe
+upx --best --lzma --force bin/wvr-launcher.exe
 
 
 cp "$MINGW_PREFIX/bin/libatk-1.0-0.dll" bin/
@@ -123,9 +139,22 @@ cp -r "$MINGW_PREFIX/lib/gstreamer-1.0" lib/
 
 cp -r "$MINGW_PREFIX/libexec/gstreamer-1.0" libexec/
 
-
 cp -r "$MINGW_PREFIX/share/icons" share/
 cp -r "$MINGW_PREFIX/share/gstreamer-1.0" share/
 cp -r "$MINGW_PREFIX/share/gst-plugins-base" share/
 mkdir -p share/glib-2.0/schemas
 cp "$MINGW_PREFIX/share/glib-2.0/schemas/gschemas.compiled" share/glib-2.0/schemas/
+
+
+# Copy wvr data resources
+mkdir data/libs
+mkdir data/projects
+
+cp -R "$WVR_STD_LIBS_PATH" data/libs/std
+rm -Rf data/libs/std/.git
+
+cp -R "$WVR_FILTERS_PATH" data/filters
+rm -Rf data/filters/.git
+
+cp -R "$WVR_EXAMPLES_PATH" data/projects/wvr-examples
+rm -Rf data/projects/wvr-examples/.git

@@ -91,9 +91,9 @@ section "install"
 	
 sectionEnd
 
-section "install-demo"
+section "install-data"
   SetOutPath "$LocalAppdata\gurke\wvr\data\"
-    # Copy the demo animation
+    # Copy the preinstalled libs animation
     file /r "wvr-data\libs"
 	
     # Copy the preinstalled filters 

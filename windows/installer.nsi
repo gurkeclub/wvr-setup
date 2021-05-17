@@ -94,13 +94,13 @@ sectionEnd
 section "install-data"
   SetOutPath "$LocalAppdata\gurke\wvr\data\"
     # Copy the preinstalled libs animation
-    file /r "wvr-data\libs"
+    file /r "data\libs"
 	
     # Copy the preinstalled filters 
-    file /r "wvr-data\filters"
+    file /r "data\filters"
 	
     # Copy the preinstalled projects 
-    file /r "wvr-data\projects"
+    file /r "data\projects"
 		
 	
 sectionEnd

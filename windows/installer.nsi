@@ -78,10 +78,13 @@ section "install"
     # Copy the executable and dlls in the installation directory
     file /r "bin"
 
-    # Copy the libs path in the installation directory
+    # Copy the lib path in the installation directory
     file /r "lib"
+	
+    # Copy the libexec path in the installation directory
+    file /r "libexec"
 		
-    # Copy the gtk resources path in the installation directory
+    # Copy the share path in the installation directory
     file /r "share"
 		
 		
@@ -99,22 +102,6 @@ section "install-demo"
     # Copy the preinstalled projects 
     file /r "wvr-data\projects"
 		
-	
-sectionEnd
-
-section "redist"
-	setOutPath $INSTDIR
-
-	# Copy the gstreamer installer in the install dir
-	file /r "gstreamer"
-
-	# Add gstreamer libs to path
-	EnVar::SetHKCU
-	EnVar::AddValueEx "GSTREAMER_1_0_ROOT_MINGW_X86_64" "$INSTDIR\gstreamer\1.0\mingw_x86_64"
-	EnVar::AddValueEx "PATH" "$INSTDIR\gstreamer\1.0\mingw_x86_64\bin"
-	EnVar::AddValueEx "PATH" "$INSTDIR\gstreamer\1.0\mingw_x86_64\lib"
-
-
 	
 sectionEnd
 

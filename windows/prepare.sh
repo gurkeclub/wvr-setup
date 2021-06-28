@@ -22,10 +22,10 @@ cp "$WVR_BIN_PATH" ./bin/
 cp "$LAUNCHER_BIN_PATH" ./bin/
 
 strip bin/wvr.exe
-upx --best --lzma --force bin/wvr.exe
+# upx --best --lzma --force bin/wvr.exe
 
 strip bin/wvr-launcher.exe
-upx --best --lzma --force bin/wvr-launcher.exe
+# upx --best --lzma --force bin/wvr-launcher.exe
 
 
 cp "$MINGW_PREFIX/bin/libatk-1.0-0.dll" bin/
